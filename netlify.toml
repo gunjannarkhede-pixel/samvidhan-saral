@@ -1,0 +1,30 @@
+[build]
+  # The Next.js application is at the repository root, next to data/ — so the
+  # build's base directory is the root and `npm install` creates the
+  # `node_modules` that Netlify's Next.js runtime expects to find beside it.
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--no-audit --no-fund"
+  # Keep the native SQLite package on a supported Node ABI. Netlify performs
+  # the install on Linux; never upload local node_modules.
+  NPM_CONFIG_IGNORE_SCRIPTS = "false"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# The app is read-only and every page is rendered on demand; make sure no proxy
+# or browser keeps a stale copy of an answer.
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"

@@ -1,0 +1,36 @@
+Samvidhan Saral — deployable package
+====================================
+
+Deploy it one of two ways (full detail in DEPLOY-NETLIFY.md):
+
+  macOS / Linux / WSL     bash deploy.sh
+      installs, builds in standalone mode, checks the bundle the Netlify
+      runtime consumes, then runs `netlify deploy --prod`.
+
+  Windows                 push this folder to Git and import it in Netlify.
+      Netlify then builds on Linux, which is required because the database
+      driver (better-sqlite3) is a native module.  Leave the Base directory
+      field EMPTY: the app is at the repository root on purpose.
+
+Why the app is at the repository root: Netlify's Next.js runtime maps the
+standalone bundle's node_modules back through the build's tracing root.  It
+only lands on a real directory when the app directory is the directory npm
+install writes into.  With the app nested in src/ and a lockfile at the root
+it asked for /opt/build/repo/node_modules and failed the build with ENOENT.
+
+Layout
+  netlify.toml, package.json, next.config.mjs   build + app configuration
+  app/ components/ lib/ scripts/ middleware.ts  the application
+  data/samvidhan.db                             13.8 MB verified database
+  data/curated/, data/raw/, data/reports/       source-of-truth excerpts
+  pipeline/                                     how the database was built
+  docs/, README.md, DEPLOY-NETLIFY.md           documentation
+
+Not included (regenerable, not needed to deploy):
+  node_modules/, .next/     reinstalled and rebuilt by npm install / npm run build
+  data/unified/, data/build/  intermediate CSVs, rebuilt by pipeline/run_all.sh
+  samvidhan.db-wal / -shm     folded into the database by the build
+
+The site answers only from data/samvidhan.db; nothing is generated from memory.
+
+Packed 2026-09-21 21:53 UTC.

@@ -1,0 +1,33 @@
+{
+  "name": "samvidhan-saral",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Samvidhan Saral — AI-assisted, multilingual, citizen-centric constitutional literacy platform",
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0 -p 3000",
+    "build": "node scripts/prepare-db.mjs && next build",
+    "start": "next start -H 0.0.0.0 -p 3000",
+    "lint": "next lint",
+    "data:build": "node scripts/build-db.mjs",
+    "db:init": "node scripts/init-db.mjs",
+    "verify:netlify": "node scripts/verify-netlify.mjs",
+    "postbuild": "node scripts/verify-netlify.mjs --skip-build"
+  },
+  "dependencies": {
+    "better-sqlite3": "11.5.0",
+    "next": "14.2.35",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@netlify/plugin-nextjs": "5.16.0",
+    "@types/better-sqlite3": "7.6.11",
+    "@types/node": "20.16.11",
+    "@types/react": "18.3.11",
+    "@types/react-dom": "18.3.1",
+    "autoprefixer": "10.4.20",
+    "postcss": "8.4.47",
+    "tailwindcss": "3.4.13",
+    "typescript": "5.6.3"
+  }
+}
